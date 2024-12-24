@@ -1,5 +1,5 @@
-module resty.dev/v3
+module github.com/solarhell/resty
 
-go 1.21
+go 1.23
 
-require golang.org/x/net v0.27.0
+require golang.org/x/net v0.33.0

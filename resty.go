@@ -7,6 +7,7 @@
 package resty // import "resty.dev/v3"
 
 import (
+	"context"
 	"math"
 	"net"
 	"net/http"
@@ -90,8 +91,10 @@ func createTransport(dialer *net.Dialer, transportSettings *TransportSettings) *
 
 	// Transport
 	t := &http.Transport{
-		Proxy:              http.ProxyFromEnvironment,
-		DialContext:        transportDialContext(dialer),
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {
+			return dialer.DialContext(ctx, network, addr)
+		},
 		DisableKeepAlives:  transportSettings.DisableKeepAlives,
 		DisableCompression: true, // Resty handles it, see [Client.AddContentDecoder]
 		ForceAttemptHTTP2:  true,

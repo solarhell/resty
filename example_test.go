@@ -16,7 +16,7 @@ import (
 
 	"golang.org/x/net/proxy"
 
-	"resty.dev/v3"
+	"github.com/solarhell/resty"
 )
 
 type DropboxError struct {
@@ -106,7 +106,7 @@ func Example_post() {
 	resp2, err2 := client.R().
 		SetBody(User{Username: "testuser", Password: "testpass"}).
 		SetResult(&AuthSuccess{}). // or SetResult(AuthSuccess{}).
-		SetError(&AuthError{}).    // or SetError(AuthError{}).
+		SetError(&AuthError{}). // or SetError(AuthError{}).
 		Post("https://myapp.com/login")
 
 	printOutput(resp2, err2)
@@ -115,7 +115,7 @@ func Example_post() {
 	resp3, err3 := client.R().
 		SetBody(map[string]any{"username": "testuser", "password": "testpass"}).
 		SetResult(&AuthSuccess{}). // or SetResult(AuthSuccess{}).
-		SetError(&AuthError{}).    // or SetError(AuthError{}).
+		SetError(&AuthError{}). // or SetError(AuthError{}).
 		Post("https://myapp.com/login")
 
 	printOutput(resp3, err3)
@@ -131,7 +131,7 @@ func Example_dropboxUpload() {
 
 	// See we are not setting content-type header, since go-resty automatically detects Content-Type for you
 	resp, err := client.R().
-		SetBody(fileBytes).     // resty autodetects content type
+		SetBody(fileBytes). // resty autodetects content type
 		SetContentLength(true). // Dropbox expects this value
 		SetAuthToken("<your-auth-token>").
 		SetError(DropboxError{}).
